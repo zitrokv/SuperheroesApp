@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.superheroesapp.R
 import com.example.superheroesapp.adapters.SuperheroAdapter
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var adapter: SuperheroAdapter
 
+    var superheroList = emptyList<SuperheroResponse>()
     private var progressBar: ProgressBar? = null
     private var i = 0
     private val handler = Handler()
@@ -39,7 +41,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = SuperheroAdapter(emptyList())
+        superheroList= emptyList()
+        adapter = SuperheroAdapter(superheroList){ opcionClick -> verDetalle( superheroList[opcionClick])}
+
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
@@ -92,7 +96,8 @@ class MainActivity : AppCompatActivity() {
 
                 runOnUiThread {
                     if (result.response == "success") {
-                        adapter.updateData(result.results, query)
+                        superheroList = result.results
+                        adapter.updateData(superheroList, query)
                     } else {
                         adapter.updateData(emptyList(), query)
                     }
@@ -105,16 +110,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //fun verDetalle(superheroDetalle: SuperheroResponse){
     fun verDetalle(superheroDetalle: SuperheroResponse){
         //Log.i("verTraza", getString(superheroDetalle.name))
+        Toast.makeText(this,superheroDetalle.name, Toast.LENGTH_LONG).show()
         /********************/
-        progressBar!!.visibility = View.VISIBLE
+        /*progressBar!!.visibility = View.VISIBLE
 
         i = progressBar!!.progress
 
         Thread(Runnable {
             // this loop will run until the value of i becomes 99
-            while (i < 100) {
+            while (i < 1000) {
                 i += 1
                 // Update the progress bar and display the current value
                 handler.post(Runnable {
@@ -123,7 +130,7 @@ class MainActivity : AppCompatActivity() {
                     //txtView!!.text = i.toString() + "/" + progressBar.max
                 })
                 try {
-                    Thread.sleep(10)
+                    Thread.sleep(1000)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
@@ -134,11 +141,11 @@ class MainActivity : AppCompatActivity() {
             // View.GONE will remove the progressbar
             progressBar!!.visibility = View.INVISIBLE
 
-        }).start()
+        }).start()*/
         /********************/
 
         val intent : Intent = Intent(this, DetalleActivity::class.java) //::class.java
-        intent.putExtra("HEROES_ID", superheroDetalle.id)
+        //intent.putExtra("HEROES_ID", superheroDetalle.id)
 
 
         //progressBar!!.visibility = View.GONE

@@ -10,7 +10,7 @@ import com.example.superheroesapp.data.SuperheroResponse
 import com.example.superheroesapp.databinding.ItemSuperheroBinding
 import com.squareup.picasso.Picasso
 
-class SuperheroAdapter(private var dataSet: List<SuperheroResponse> = emptyList()) : RecyclerView.Adapter<SuperheroViewHolder>(){
+class SuperheroAdapter(private var dataSet: List<SuperheroResponse> = emptyList(), private val onItemClickListener: (Int) -> Unit) : RecyclerView.Adapter<SuperheroViewHolder>(){
 
     private var highlightText: String? = null
 
@@ -24,6 +24,10 @@ class SuperheroAdapter(private var dataSet: List<SuperheroResponse> = emptyList(
 
     override fun onBindViewHolder(holder: SuperheroViewHolder, position: Int) {
         holder.render(dataSet[position])
+        holder.itemView.setOnClickListener{
+            onItemClickListener(position)
+            //onItemClickListener(holder.adapterPosition) // es la posicion más real, se calcula dinamicamente!!
+        }
 
         if (highlightText != null) {
             holder.highlight(highlightText!!)
