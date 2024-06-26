@@ -16,6 +16,7 @@ import com.example.superheroesapp.adapters.SuperheroProvider
 import com.example.superheroesapp.data.SuperheroApiService
 import com.example.superheroesapp.data.SuperheroResponse
 import com.example.superheroesapp.databinding.ActivityMainBinding
+import com.example.superheroesapp.utils.RetrofitUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         //segundo plano ó hilo secundario paralelo
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val apiService = getRetrofit().create(SuperheroApiService::class.java)
+                val apiService = RetrofitUtils.getRetrofit().create(SuperheroApiService::class.java)
                 val result = apiService.findSuperheroesByName(query)
 
                 runOnUiThread {
@@ -113,7 +114,7 @@ class MainActivity : AppCompatActivity() {
     //fun verDetalle(superheroDetalle: SuperheroResponse){
     fun verDetalle(superheroDetalle: SuperheroResponse){
         //Log.i("verTraza", getString(superheroDetalle.name))
-        Toast.makeText(this,superheroDetalle.name, Toast.LENGTH_LONG).show()
+        //Toast.makeText(this,superheroDetalle.name, Toast.LENGTH_LONG).show()
         /********************/
         /*progressBar!!.visibility = View.VISIBLE
 
@@ -145,7 +146,7 @@ class MainActivity : AppCompatActivity() {
         /********************/
 
         val intent : Intent = Intent(this, DetalleActivity::class.java) //::class.java
-        //intent.putExtra("HEROES_ID", superheroDetalle.id)
+        intent.putExtra("HEROES_ID", superheroDetalle.id)
 
 
         //progressBar!!.visibility = View.GONE
@@ -154,6 +155,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //esta funcion se movió a RetrofitUtils para llamarse en comun desde Main y Detalle Activity
     private fun getRetrofit(): Retrofit {
 
         return Retrofit.Builder()
