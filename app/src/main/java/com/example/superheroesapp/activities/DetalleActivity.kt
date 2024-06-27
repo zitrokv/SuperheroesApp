@@ -1,5 +1,6 @@
 package com.example.superheroesapp.activities
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -8,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.drawToBitmap
+import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import com.example.horoscopo.SessionManager
 import com.example.superheroesapp.R
 import com.example.superheroesapp.adapters.SuperheroProvider
@@ -49,6 +51,7 @@ class DetalleActivity : AppCompatActivity() {
         //val id = intent.getIntExtra("HOROSCOPO_ID",-1)
         //detalleActivity = SuperheroProvider.findById(id)
 
+        bindingDetalle.matchParent.setBackgroundColor(Color.DKGRAY)
         bindingDetalle.DetalleTextView.text = ""//(id).toString()
         searchById(id)
         //bindingDetalle.DetalleTextView.text = getString(id)
@@ -102,14 +105,22 @@ class DetalleActivity : AppCompatActivity() {
                 val apiService =RetrofitUtils.getRetrofit().create(SuperheroApiService::class.java)
                 val result = apiService.findSuperheroesById(query)
 
+
                 runOnUiThread {
                     //Toast.makeText(this, result.id, Toast.LENGTH_LONG).show()
                     //bindingDetalle.detalleImageView.setImageDrawable()
                     Picasso.get().load(result.image.url).into(bindingDetalle.detalleImageView)
                     bindingDetalle.waterImageView.setImageBitmap(bindingDetalle.detalleImageView.drawToBitmap())
                     bindingDetalle.DetalleTextView.text = result.name
-                    bindingDetalle.prediccionTextView.text = result.name
-                    bindingDetalle.textoDelDia.text = result.name
+                    bindingDetalle.prediccionTextView.text = result.biography.fullName
+                    bindingDetalle.textoDelDia.text = result.biography.alignment
+
+                    Toast.makeText(this@DetalleActivity, result.labelJSON.resultado.campoNombre.toString(), Toast.LENGTH_LONG*2).show()
+                    //bindingDetalle.textoDelDia.text = result.labelJSON.r.toString()
+                    bindingDetalle.textoDelDia.text = result.labelJSON.resultado.campoNombre
+
+                    //bindingDetalle.waterImageView.drawable
+
 
 
                     Picasso.get().load(result.image.url).into(bindingDetalle.waterImageView)

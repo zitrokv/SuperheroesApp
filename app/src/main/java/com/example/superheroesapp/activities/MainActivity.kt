@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
 
 
-        searchByName("super")
+        searchByName(SuperheroProvider.textoBuscar)
     }
 
     override fun onResume() {
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
     //fun verDetalle(superheroDetalle: SuperheroResponse){
     fun verDetalle(superheroDetalle: SuperheroResponse){
         //Log.i("verTraza", getString(superheroDetalle.name))
-        //Toast.makeText(this,superheroDetalle.name, Toast.LENGTH_LONG).show()
+        Toast.makeText(this,superheroDetalle.name, Toast.LENGTH_LONG).show()
         /********************/
         /*progressBar!!.visibility = View.VISIBLE
 
